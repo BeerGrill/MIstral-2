@@ -1,0 +1,46 @@
+.container {
+  height: 200px;
+  width: 80%;
+
+  margin-left: auto;
+  margin-right: auto;
+}
+.row::after {
+  content: '';
+  clear: both;
+  display: block;
+}
+.row {
+  height: 100px;
+}
+.columns {
+  width: 50px;
+  background-color: rgb(24, 22, 21);
+}
+[class*='col-'] {
+  float: left;
+  min-height: 1px;
+}
+.col-1 {
+  width: 16.666%;
+}
+.col-2 {
+  width: 33.333%;
+}
+.col-3 {
+  width: 50%;
+}
+.col-4 {
+  width: 100%;
+}
+/*SIchtbarkeit des columnes*/
+.border,
+.border * {
+  border: 1px solid #c00000;
+}
+p {
+  margin: 0;
+  padding: 0;
+  color: #c00000;
+  text-align: center;
+}
