@@ -22,6 +22,11 @@ const router = createRouter({
       name: 'Start_site_view',
       component: Start_site_view,
     },
+  //   {
+  //     path: '*',
+  //     name: 'catchAll',
+  //     component: Home
+  //  }
   ],
 })
 

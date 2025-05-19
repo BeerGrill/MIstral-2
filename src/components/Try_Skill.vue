@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     receivedData() {
-      alert(this.$store.state.data);
+      // alert(this.$store.state.data);
     },
   },
   methods: {
@@ -57,7 +57,7 @@ export default {
     // get id von testende Datei
     async getFileId() {
       if (!this.file) {
-        alert('No file uploaded yet!')
+        // alert('No file uploaded yet!')
         return
       }
       const formData = new FormData()
@@ -80,12 +80,12 @@ export default {
         this.fileId = data.id
         this.getURL()
       } catch (error) {
-        console.error('Es gab einen Fehler bei der Übermittlung:getFileId', error)
+        // console.error('Es gab einen Fehler bei der Übermittlung:getFileId', error)
 
         if (error.message.includes('Failed to fetch')) {
-          alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
+          // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
         } else {
-          alert('Fehler bei der Übermittlung:getFileId ' + error.message)
+          // alert('Fehler bei der Übermittlung:getFileId ' + error.message)
         }
       }
     },
@@ -115,9 +115,9 @@ export default {
         console.error('Es gab einen Fehler bei der Übermittlung:getURL', error)
 
         if (error.message.includes('Failed to fetch')) {
-          alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
+          // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
         } else {
-          alert('Fehler bei der Übermittlung: getURL' + error.message)
+          // alert('Fehler bei der Übermittlung: getURL' + error.message)
         }
       }
     },
@@ -161,9 +161,9 @@ export default {
         console.error('Es gab einen Fehler bei der Übermittlung: Ask modell', error)
 
         if (error.message.includes('Failed to fetch')) {
-          alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
+          // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
         } else {
-          alert('Fehler bei der Übermittlung: Ask modell ' + error.message)
+          // alert('Fehler bei der Übermittlung: Ask modell ' + error.message)
         }
       }
     },
@@ -190,7 +190,7 @@ export default {
         this.prompts = data
         this.globalInstruction = data[0].modell_verhalten
         this.modell_api = data[0].modell_api
-        // alert(data[0].modell_api)
+        //alert(data[0].modell_api)
         //alert(JSON.stringify(data))
         for (let i = 0; i < data.length; i++) {
           this.frageObject.push({
@@ -201,14 +201,14 @@ export default {
 
       } catch (error) {
         console.error(
-          'Es gab einen Fehler bei der Übermittlung:Labels können nicht gezogen werden 1',
+          'Es gab einen Fehler bei der Übermittlung:Labels können nicht gezogen werden ',
           error,
         )
 
         if (error.message.includes('Failed to fetch')) {
-          alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
+          // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
         } else {
-          alert('Fehler bei der Übermittlung:Labels können nicht gezogen werden 2' + error.message)
+          // alert('Fehler bei der Übermittlung:Labels können nicht gezogen werden ' + error.message)
         }
       }
     },
