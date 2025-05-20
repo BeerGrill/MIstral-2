@@ -12,13 +12,20 @@ export default {
   // },
   data() {
     return {
-      url: null,
+      test: [
+        { label: 'Geburtsdatum des Kunden', antwort: 'Nicht gefunden' },
+        {
+          label: 'Adresse des Nachunternehmer',
+          antwort: 'Alt-Moabit 91, 10559 Berlin'
+        }
+      ]
+      ,
       frage: null,
       label: null,
       type: null,
-      Antworten: null,
+      Antworten: [],
       pdfUrl: null,
-      url: null,
+      url: null,   ///file URL
       fileId: null,
       file: null,
       prompts: [],
@@ -109,10 +116,10 @@ export default {
         }
         const data = await response.json()
         this.url = data.url
-
+        // 
         this.askModel()
       } catch (error) {
-        console.error('Es gab einen Fehler bei der Übermittlung:getURL', error)
+        // console.error('Es gab einen Fehler bei der Übermittlung:getURL', error)
 
         if (error.message.includes('Failed to fetch')) {
           // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
@@ -134,7 +141,7 @@ export default {
           Authorization: 'Bearer dBFznnVVDkfgvHricnDdXAljjvngXkjQ',
         },
         body: JSON.stringify({
-          model: 'mistral-small-latest',
+          model: 'mistral-small-latest', //7 modell variable
           messages: [
             {
               role: 'user',
@@ -143,6 +150,7 @@ export default {
           ],
         }),
       }
+
       try {
         const response = await fetch(this.modell_api, requestOptions)
 
@@ -150,15 +158,15 @@ export default {
           const error = `Fehler:" ${response.status} - ${response.statusText}}`
           throw new Error(error)
         }
-        //this.frageObject = []
         const data = await response.json()
-        //const splitted_Antwort = data.choices[0].message.content.split("Lable:")
-        this.Antworten = data.choices[0].message.content.split("#")
-        // this.document = data.choices[0].message.content[0].document_url
 
-        // alert(this.Antworten)
+        const objekt = "[" + data.choices[0].message.content.replace(/'/g, '"') + "]"
+        this.Antworten = JSON.parse(objekt)
+        // console.log(objekt)
+
+
       } catch (error) {
-        console.error('Es gab einen Fehler bei der Übermittlung: Ask modell', error)
+        // console.error('Es gab einen Fehler bei der Übermittlung: Ask modell', error)
 
         if (error.message.includes('Failed to fetch')) {
           // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
@@ -190,20 +198,20 @@ export default {
         this.prompts = data
         this.globalInstruction = data[0].modell_verhalten
         this.modell_api = data[0].modell_api
-        //alert(data[0].modell_api)
-        //alert(JSON.stringify(data))
+
         for (let i = 0; i < data.length; i++) {
           this.frageObject.push({
             type: "text",
             text: this.globalInstruction + data[i].instructions,
           })
+
         }
 
       } catch (error) {
-        console.error(
-          'Es gab einen Fehler bei der Übermittlung:Labels können nicht gezogen werden ',
-          error,
-        )
+        // console.error(
+        //   'Es gab einen Fehler bei der Übermittlung:Labels können nicht gezogen werden ',
+        //   error,
+        // )
 
         if (error.message.includes('Failed to fetch')) {
           // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
@@ -215,6 +223,7 @@ export default {
   },
   mounted() {
     this.get_Prompts();
+
   },
 }
 </script>
@@ -222,18 +231,24 @@ export default {
 <template>
   <div class="label_bereich">
     <ul style="padding: 20px 0 0 20px; margin-left: 20px">
-      <li class="label-header">label</li>
+      <li class="label-header">Label</li>
       <li class="value-header">Value</li>
     </ul>
-    <div class="modell-antwort-bereich">
-
-      <ul>
-        <li class=" label" v-for="prompt in prompts" :key="prompt.label_id">{{ prompt.label }}{{ Antwort }}</li>
-      </ul>
-      <ul>
-        <li class="value" v-for="Antwort in Antworten" :key="Antwort.id">{{ Antwort }}</li>
-      </ul>
+    <!-- <div class="modell-antwort-bereich">
+      <div class="label-antwort-box">
+        <div class="label">
+          <p v-for="prompt in prompts" :key="prompt.label_id">{{ prompt.label }}</p>
+        </div>
+        <div class="value">
+          <p v-for="Antwort in Antworten" :key="Antwort.id">{{ Antwort }}</p>
+        </div>
+      </div>
+    </div> -->
+    <div v-for="antwort in Antworten" :key="antwort.label_id" class="label-value-row">
+      <span class="label">{{ antwort.label }}</span>
+      <span class="value">{{ antwort.antwort }}</span>
     </div>
+
   </div>
   <div class="main-bereich">
     <!-- <div class="modell-overview-container">
@@ -273,60 +288,6 @@ export default {
   height: 100%;
 }
 
-/* .modell-overview-container {
-  margin: 50px 100px 0 0;
-  height: 150px;
-  width: 90%;
-  background-color: lightgray;
-  display: flex;
-  flex-wrap: wrap;
-  border-radius: 10px;
-  min-width: 500px;
-} */
-
-/* [class*='col-'] {
-  float: left;
-  min-height: 1px;
-}
-
-.col-1 {
-  width: 100%;
-  padding: 16px;
-}
-
-[class*='col-2'] {
-  padding: 16px;
-  font-size: 0.8rem;
-}
-
-.col-2-1 {
-  padding: 13px 15px 5px 5px;
-  opacity: 1;
-}
-
-.col-2-2 {
-  width: auto;
-  margin: 0%;
-  padding: 13px 10px 5px 5px;
-  opacity: 0.5;
-}
-
-.col-2-3 {
-  width: 10%;
-  padding: 0px 0 0 5px;
-} */
-
-/* .row-drop-down-label-menu {
-  height: 50px;
-  width: 100%;
-  min-width: 500px;
-}
-
-.row-modeloverwiew {
-  height: 50px;
-  width: 100%;
-} */
-
 .upload-button-container {
   width: 90%;
   height: 75px;
@@ -338,19 +299,6 @@ export default {
   min-width: 500px;
 }
 
-/* .row-drop-down-label-menu>button {
-  width: auto;
-  height: 45px;
-  background-color: rgb(199, 205, 211);
-  border-radius: 7px;
-  margin-top: 4px;
-}
-
-.row-drop-down-label-menu>button img {
-  width: 30px;
-  height: auto;
-  margin-top: 13px;
-} */
 
 .upload-button>button {
   border-radius: 5px;
@@ -390,7 +338,7 @@ ul>li {
 }
 
 .label-header {
-  width: 180px;
+  width: 40%;
   height: auto;
   min-width: 100px;
   border-right: 1px solid black;
@@ -398,22 +346,24 @@ ul>li {
 }
 
 .value-header {
-  width: 200px;
+  width: 60%;
   height: auto;
   margin-left: 5px;
   display: inline;
 }
 
 .label {
-  width: 180px;
+  width: 40%;
   height: auto;
   min-width: 100px;
   margin-top: 10px;
   display: block;
+  margin-left: 17px;
+  border-bottom: 1px, solid black;
 }
 
 .value {
-  width: auto;
+  width: 60%;
   max-width: 340px;
   height: auto;
   min-width: 100px;
@@ -424,7 +374,7 @@ ul>li {
 
 
 .modell-antwort-bereich {
-  width: 550px;
+  width: 93%;
   height: auto;
   min-height: 400px;
   background-color: rgb(238, 234, 230);
@@ -433,6 +383,18 @@ ul>li {
   display: flex;
 
 }
+
+.label-antwort-box {
+  width: 100%;
+  height: auto;
+  background-color: aqua;
+  justify-content: space-between;
+  display: flex;
+  border-bottom: 1px solid grey;
+  flex-direction: column;
+
+}
+
 
 .modell-antwort-bereich>ul {
   padding: 20px 0 0 20px;
@@ -448,5 +410,28 @@ ul>li {
   height: auto;
   display: flex;
   margin-top: 80px;
+}
+
+
+.label-value-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgb(184, 182, 182);
+  margin-bottom: 0.5em;
+  /* optional, falls zu wenig Platz da ist */
+}
+
+.label {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.value {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 </style>

@@ -87,20 +87,20 @@ export default {
           'http://localhost/mistral_projekt/createLabel.php',
           requestOptions,
         )
-        //alert(requestOptions.body)
+        alert(requestOptions.body)
         if (!response.ok) {
           const error = `Fehler: ${response.status} - ${response.statusText}`
           throw new Error(error)
         }
         this.get_Prompts();
-        // alert(`Erfolgreich gespeichert! ` + requestOptions.body)
+        alert(`Erfolgreich gespeichert! ` + requestOptions.body)
       } catch (error) {
-        // console.error('Es gab einen Fehler bei der Übermittlung:', error)
+        console.error('Es gab einen Fehler bei der Übermittlung:', error)
 
         if (error.message.includes('Failed to fetch')) {
-          // alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
+          alert('Der Server ist nicht erreichbar. Bitte überprüfen Sie Ihre Verbindung.')
         } else {
-          // alert('Fehler bei der Übermittlung: ' + error.message)
+          alert('Fehler bei der Übermittlung: ' + error.message)
         }
       }
       this.newPrompt = []
