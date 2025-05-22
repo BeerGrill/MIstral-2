@@ -73,7 +73,7 @@ export default {
       const requestOptions = {
         method: 'POST',
         headers: {
-          Authorization: 'Bearer dBFznnVVDkfgvHricnDdXAljjvngXkjQ',
+          Authorization: 'Bearer 'Your bearer Token',
         },
         body: formData,
       }
